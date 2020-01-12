@@ -1,20 +1,6 @@
 require 'net/http'
 require 'webmock/rspec'
-
-class WeatherForStub
-
-    attr_accessor :location
-
-    def initialize(client = Net::HTTP)
-        @uri = 'https://www.metaweather.com/api/location/search/?query='
-        @client = client
-        # WebMock.allow_net_connect! #WebMock defaults to blocking actual requests
-    end
-
-    def sendRequest
-        @client.get(URI(@uri + self.location))
-    end
-end
+require 'weather'
 
 class StubClient
     def get(url)
@@ -30,7 +16,7 @@ end
 describe "Stub" do
 
     it "always returns the same response" do
-        weatherAPI = WeatherForStub.new(StubClient.new)
+        weatherAPI = Weather.new(StubClient.new)
         weatherAPI.location = 'sydney'
         response = weatherAPI.sendRequest
         expect(response.to_s).to include('woeid')
