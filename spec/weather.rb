@@ -1,4 +1,3 @@
-
 class Weather
 
     attr_accessor :location
@@ -11,5 +10,9 @@ class Weather
 
     def sendRequest
         @client.get(URI(@uri + self.location))
+    end
+
+    def update(newData)
+        response = @client.put(URI(@uri + self.location), newData)
     end
 end
